@@ -16,6 +16,7 @@ pub fn main() {
         .unwrap();
 
     let mut canvas = window.into_canvas().build().unwrap();
+    canvas.clear();
     canvas.set_draw_color(Color::RGB(255, 255, 255));
     let point = Point::new(400, 400);
     canvas.draw_point(point).unwrap();

@@ -2,7 +2,8 @@ extern crate sdl2;
 
 use sdl2::event::Event;
 use sdl2::pixels::Color;
-use std::time::Duration;
+use sdl2::rect::Point;
+use sdl2::rect::Rect;
 
 pub fn main() {
     let sdl_context = sdl2::init().unwrap();
@@ -15,25 +16,19 @@ pub fn main() {
         .unwrap();
 
     let mut canvas = window.into_canvas().build().unwrap();
-
-    canvas.set_draw_color(Color::RGB(0, 255, 255));
-    canvas.clear();
+    canvas.set_draw_color(Color::RGB(255, 255, 255));
+    let point = Point::new(400, 400);
+    canvas.draw_point(point).unwrap();
+    canvas.fill_rect(Rect::new(10, 10, 80, 70)).unwrap();
     canvas.present();
+
     let mut event_pump = sdl_context.event_pump().unwrap();
-    let mut i = 0;
     'running: loop {
-        i = (i + 1) % 255;
-        canvas.set_draw_color(Color::RGB(i, 64, 255 - i));
-        canvas.clear();
         for event in event_pump.poll_iter() {
             match event {
                 Event::Quit { .. } => break 'running,
                 _ => {}
             }
         }
-        // The rest of the game loop goes here...
-
-        canvas.present();
-        ::std::thread::sleep(Duration::new(0, 1_000_000_000u32 / 60));
     }
 }

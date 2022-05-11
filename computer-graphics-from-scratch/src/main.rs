@@ -5,8 +5,9 @@ use sdl2::pixels::Color;
 use sdl2::rect::Point;
 use sdl2::rect::Rect;
 use sdl2::render::Canvas;
+use sdl2::video::Window;
 
-pub fn put_pixel(canvas: &mut Canvas<sdl2::video::Window>, color: Color, position: Point) {
+pub fn put_pixel(canvas: &mut Canvas<Window>, color: Color, position: Point) {
     canvas.set_draw_color(color);
     canvas.draw_point(position).unwrap()
 }

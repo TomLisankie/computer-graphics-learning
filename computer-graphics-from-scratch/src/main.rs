@@ -23,19 +23,16 @@ pub fn main() {
 
     let mut canvas = window.into_canvas().build().unwrap();
     canvas.clear();
-    canvas.set_draw_color(Color::RGB(255, 255, 255));
-    canvas.fill_rect(Rect::new(10, 10, 80, 70)).unwrap();
-    put_pixel(&mut canvas, Color::RGB(255, 0, 0), Point::new(40, 40));
-    canvas.present();
 
     let mut event_pump = sdl_context.event_pump().unwrap();
     let mut i = 0;
     'running: loop {
-        canvas.clear();
         i += 1;
         canvas.set_draw_color(Color::RGB(255, 255, 255));
         canvas.fill_rect(Rect::new(0, 0, 800, 600)).unwrap();
         put_pixel(&mut canvas, Color::RGB(255, 0, 0), Point::new(i % 800, 40));
+        put_pixel(&mut canvas, Color::RGB(0, 255, 0), Point::new(i % 800, 280));
+        put_pixel(&mut canvas, Color::RGB(0, 0, 255), Point::new(i % 800, 580));
         canvas.present();
         for event in event_pump.poll_iter() {
             match event {

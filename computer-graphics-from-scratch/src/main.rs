@@ -13,6 +13,25 @@ pub fn put_pixel(canvas: &mut Canvas<Window>, color: Color, position: Point) {
     canvas.draw_point(position).unwrap()
 }
 
+pub fn draw_rectangle(
+    canvas: &mut Canvas<Window>,
+    color: Color,
+    top_left: Point,
+    length: i32,
+    width: i32,
+) {
+    canvas.set_draw_color(color);
+    for i in 0..width {
+        for j in 0..length {
+            put_pixel(
+                canvas,
+                color,
+                Point::new(j + top_left.x(), i + top_left.y()),
+            )
+        }
+    }
+}
+
 pub fn main() {
     let sdl_context = sdl2::init().unwrap();
     let video_subsystem = sdl_context.video().unwrap();
@@ -35,6 +54,13 @@ pub fn main() {
         put_pixel(&mut canvas, Color::RGB(255, 0, 0), Point::new(i % 800, 40));
         put_pixel(&mut canvas, Color::RGB(0, 255, 0), Point::new(i % 800, 280));
         put_pixel(&mut canvas, Color::RGB(0, 0, 255), Point::new(i % 800, 580));
+        draw_rectangle(
+            &mut canvas,
+            Color::RGB(255, 0, 0),
+            Point::new(100, 50),
+            200,
+            200,
+        );
         canvas.present();
         ::std::thread::sleep(Duration::new(0, 1_000_000_000u32 / 60));
         for event in event_pump.poll_iter() {

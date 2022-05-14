@@ -6,6 +6,7 @@ use sdl2::rect::Point;
 use sdl2::rect::Rect;
 use sdl2::render::Canvas;
 use sdl2::video::Window;
+use std::time::Duration;
 
 pub fn put_pixel(canvas: &mut Canvas<Window>, color: Color, position: Point) {
     canvas.set_draw_color(color);
@@ -29,12 +30,13 @@ pub fn main() {
     let mut i = 0;
     'running: loop {
         i += 1;
-        canvas.set_draw_color(Color::RGB(255, 255, 255));
+        canvas.set_draw_color(Color::RGB(0, 0, 0));
         canvas.fill_rect(Rect::new(0, 0, 800, 600)).unwrap();
         put_pixel(&mut canvas, Color::RGB(255, 0, 0), Point::new(i % 800, 40));
         put_pixel(&mut canvas, Color::RGB(0, 255, 0), Point::new(i % 800, 280));
         put_pixel(&mut canvas, Color::RGB(0, 0, 255), Point::new(i % 800, 580));
         canvas.present();
+        ::std::thread::sleep(Duration::new(0, 1_000_000_000u32 / 60));
         for event in event_pump.poll_iter() {
             match event {
                 Event::Quit { .. } => break 'running,

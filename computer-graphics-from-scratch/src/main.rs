@@ -8,9 +8,15 @@ use sdl2::render::Canvas;
 use sdl2::video::Window;
 use std::time::Duration;
 
+const LENGTH: u32 = 800;
+const HEIGHT: u32 = 600;
+
 pub fn put_pixel(canvas: &mut Canvas<Window>, color: Color, position: Point) {
+    // `position` is on a zero-centered coordinate system
+    let new_x: i32 = ((LENGTH / 2) as i32) + position.x();
+    let new_y: i32 = ((HEIGHT / 2) as i32) + position.y();
     canvas.set_draw_color(color);
-    canvas.draw_point(position).unwrap()
+    canvas.draw_point(Point::new(new_x, new_y)).unwrap()
 }
 
 pub fn draw_rectangle(
@@ -37,7 +43,7 @@ pub fn main() {
     let video_subsystem = sdl_context.video().unwrap();
 
     let window = video_subsystem
-        .window("rust-sdl2 demo", 800, 600)
+        .window("rust-sdl2 demo", LENGTH, HEIGHT)
         .position_centered()
         .build()
         .unwrap();
@@ -46,19 +52,32 @@ pub fn main() {
     canvas.clear();
 
     let mut event_pump = sdl_context.event_pump().unwrap();
-    let mut i = 0;
+    let mut i: u32 = 0;
     'running: loop {
         i += 1;
         canvas.set_draw_color(Color::RGB(0, 0, 0));
-        canvas.fill_rect(Rect::new(0, 0, 800, 600)).unwrap();
-        put_pixel(&mut canvas, Color::RGB(255, 0, 0), Point::new(i % 800, 40));
-        put_pixel(&mut canvas, Color::RGB(0, 255, 0), Point::new(i % 800, 280));
-        put_pixel(&mut canvas, Color::RGB(0, 0, 255), Point::new(i % 800, 580));
+        canvas.fill_rect(Rect::new(0, 0, LENGTH, HEIGHT)).unwrap();
+        let new_pos = i % LENGTH;
+        put_pixel(
+            &mut canvas,
+            Color::RGB(255, 0, 0),
+            Point::new(new_pos as i32, 40),
+        );
+        put_pixel(
+            &mut canvas,
+            Color::RGB(0, 255, 0),
+            Point::new(new_pos as i32, 280),
+        );
+        put_pixel(
+            &mut canvas,
+            Color::RGB(0, 0, 255),
+            Point::new(new_pos as i32, 580),
+        );
         draw_rectangle(
             &mut canvas,
             Color::RGB(255, 0, 0),
             Point::new(100, 50),
-            200,
+            400,
             200,
         );
         canvas.present();
